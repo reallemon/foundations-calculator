@@ -2,6 +2,7 @@
 let displayedValue = '0';
 let memory = '0';
 let currentOperation = null;
+let justEvaluated = false;
 const display = document.querySelector('#display');
 
 const add = (a, b) => +a + +b;
@@ -38,7 +39,7 @@ function operate(operator, a, b) {
 }
 
 function updateDisplay(number, forceRefresh = false) {
-  if (displayedValue == 0 || forceRefresh) {
+  if (displayedValue === '0' || forceRefresh) {
     displayedValue = `${number}`;
   } else {
     displayedValue += number;
@@ -62,18 +63,20 @@ function evaluate() {
 
 function reset() {
   updateDisplay(0, true);
-  memory = 0;
+  memory = '0';
   currentOperation = null;
+  justEvaluated = false;
 }
 
 document.querySelectorAll('.number').forEach((number) => {
   number.addEventListener('click', () => {
     const value = number.innerText;
-    if (currentOperation && memory == 0) {
+    if (currentOperation && memory === '0') {
       memory = displayedValue;
       updateDisplay(value, true);
-    } else if (memory == 0 && !currentOperation) {
+    } else if (justEvaluated) {
       updateDisplay(value, true);
+      justEvaluated = false;
     } else {
       updateDisplay(value);
     }
@@ -90,12 +93,23 @@ document.querySelectorAll('.operator').forEach((operator) => {
       displayedValue = '0';
     }
     currentOperation = type;
+    if (justEvaluated) justEvaluated = false;
   });
 });
 
 document.querySelector('#equals').addEventListener('click', () => {
   evaluate();
   currentOperation = null;
+  justEvaluated = true;
 });
 
 document.querySelector('#clear').addEventListener('click', reset);
+
+document.querySelector('#decimal').addEventListener('click', () => {
+  if (justEvaluated) justEvaluated = false;
+
+  if (!displayedValue.includes('.')) {
+    displayedValue += '.';
+    display.innerText = displayedValue;
+  }
+});
