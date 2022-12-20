@@ -9,18 +9,28 @@ const multiply = (a, b) => +a * +b;
 const divide = (a, b) => +a / +b;
 
 function operate(operator, a, b) {
+  let result = 0;
+
   switch (operator) {
     case '+':
-      return add(a, b);
+      result = add(a, b);
+      break;
     case '-':
-      return subtract(a, b);
+      result = subtract(a, b);
+      break;
     case '*':
-      return multiply(a, b);
+      result = multiply(a, b);
+      break;
     case '/':
-      return divide(a, b);
+      result = divide(a, b);
+      break;
     default:
       console.error('Please use a valid operator');
   }
+
+  if (result % 1 === 0) return result;
+
+  return result.toFixed(2);
 }
 
 function updateDisplay(number, forceRefresh = false) {
