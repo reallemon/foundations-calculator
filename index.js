@@ -1,10 +1,12 @@
 let displayedValue = '0';
+let memory = '0';
+let currentOperation = null;
 const display = document.querySelector('#display');
 
-const add = (a, b) => a + b;
-const subtract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
+const add = (a, b) => +a + +b;
+const subtract = (a, b) => +a - +b;
+const multiply = (a, b) => +a * +b;
+const divide = (a, b) => +a / +b;
 
 function operate(operator, a, b) {
   switch (operator) {
@@ -21,9 +23,9 @@ function operate(operator, a, b) {
   }
 }
 
-function updateDisplay(number) {
+function updateDisplay(number, forceRefresh = false) {
   // eslint-disable-next-line eqeqeq
-  if (displayedValue == 0) {
+  if (displayedValue == 0 || forceRefresh) {
     displayedValue = `${number}`;
   } else {
     displayedValue += number;
@@ -33,9 +35,44 @@ function updateDisplay(number) {
   return displayedValue;
 }
 
+function evaluate() {
+  if (currentOperation !== null) {
+    const result = operate(currentOperation, memory, displayedValue);
+    updateDisplay(result, true);
+  }
+
+  memory = '0';
+}
+
+function reset() {
+  updateDisplay(0, true);
+  memory = 0;
+  currentOperation = null;
+}
+
 document.querySelectorAll('.number').forEach((number) => {
   number.addEventListener('click', () => {
     const value = number.innerText;
     updateDisplay(value);
   });
 });
+
+document.querySelectorAll('.operator').forEach((operator) => {
+  const type = operator.innerText;
+  operator.addEventListener('click', () => {
+    if (currentOperation !== null) {
+      evaluate();
+    } else {
+      memory = displayedValue;
+      displayedValue = '0';
+    }
+    currentOperation = type;
+  });
+});
+
+document.querySelector('#equals').addEventListener('click', () => {
+  evaluate();
+  currentOperation = null;
+});
+
+document.querySelector('#clear').addEventListener('click', reset);
