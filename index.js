@@ -26,8 +26,11 @@ function operate(operator, a, b) {
       result = divide(a, b);
       break;
     default:
-      console.error('Please use a valid operator');
+      return '😵';
   }
+
+  // Dividing by zero will kill me
+  if (result == Infinity) return '😵';
 
   if (result % 1 === 0) return result;
 
@@ -46,6 +49,9 @@ function updateDisplay(number, forceRefresh = false) {
 }
 
 function evaluate() {
+  // Handle divide by zero results
+  if (memory === '😵' || displayedValue === '😵') reset();
+
   if (currentOperation !== null) {
     const result = operate(currentOperation, memory, displayedValue);
     updateDisplay(result, true);
