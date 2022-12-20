@@ -29,7 +29,8 @@ button {
 
 .operator,
 #clear,
-#decimal {
+#decimal,
+#equals {
   background-color: #bb9af7;
 }
 
