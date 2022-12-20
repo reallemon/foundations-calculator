@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 let displayedValue = '0';
 let memory = '0';
 let currentOperation = null;
@@ -34,7 +35,6 @@ function operate(operator, a, b) {
 }
 
 function updateDisplay(number, forceRefresh = false) {
-  // eslint-disable-next-line eqeqeq
   if (displayedValue == 0 || forceRefresh) {
     displayedValue = `${number}`;
   } else {
@@ -63,9 +63,10 @@ function reset() {
 document.querySelectorAll('.number').forEach((number) => {
   number.addEventListener('click', () => {
     const value = number.innerText;
-    // eslint-disable-next-line eqeqeq
     if (currentOperation && memory == 0) {
       memory = displayedValue;
+      updateDisplay(value, true);
+    } else if (memory == 0 && !currentOperation) {
       updateDisplay(value, true);
     } else {
       updateDisplay(value);
