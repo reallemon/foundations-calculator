@@ -53,7 +53,13 @@ function reset() {
 document.querySelectorAll('.number').forEach((number) => {
   number.addEventListener('click', () => {
     const value = number.innerText;
-    updateDisplay(value);
+    // eslint-disable-next-line eqeqeq
+    if (currentOperation && memory == 0) {
+      memory = displayedValue;
+      updateDisplay(value, true);
+    } else {
+      updateDisplay(value);
+    }
   });
 });
 
