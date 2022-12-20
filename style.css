@@ -15,3 +15,36 @@ body {
 #buttons {
   display: flex;
 }
+
+button {
+  border-radius: 12px;
+  font-size: 1.5em;
+  min-width: 2em;
+  min-height: 1.5em;
+}
+
+.number {
+  background-color: #cfc9c2;
+}
+
+.operator {
+  background-color: #bb9af7;
+}
+
+#display-container {
+  display: flex;
+  background-color: #565f89;
+  width: 80%;
+  margin: 1em auto;
+}
+
+#display {
+  font-size: 3em;
+  margin: 0.3em auto;
+}
+
+#operators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
