@@ -33,8 +33,9 @@ function updateDisplay(number) {
   return displayedValue;
 }
 
-// document.querySelectorAll('.number').forEach((number) => {
-//   number.addEventListener('click', () => {
-
-//   })
-// })
+document.querySelectorAll('.number').forEach((number) => {
+  number.addEventListener('click', () => {
+    const value = number.innerText;
+    updateDisplay(value);
+  });
+});
