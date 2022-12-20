@@ -68,53 +68,34 @@ function reset() {
   justEvaluated = false;
 }
 
-document.querySelectorAll('.number').forEach((number) => {
-  number.addEventListener('click', () => {
-    const value = number.innerText;
-    if (currentOperation && memory === '0') {
-      memory = displayedValue;
-      updateDisplay(value, true);
-    } else if (justEvaluated) {
-      updateDisplay(value, true);
-      justEvaluated = false;
-    } else {
-      updateDisplay(value);
-    }
-  });
-});
+function sendNumber(value) {
+  if (currentOperation && memory === '0') {
+    memory = displayedValue;
+    updateDisplay(value, true);
+  } else if (justEvaluated) {
+    updateDisplay(value, true);
+    justEvaluated = false;
+  } else {
+    updateDisplay(value);
+  }
+}
 
-document.querySelectorAll('.operator').forEach((operator) => {
-  const type = operator.innerText;
-  operator.addEventListener('click', () => {
-    if (currentOperation !== null) {
-      evaluate();
-    } else {
-      memory = displayedValue;
-      displayedValue = '0';
-    }
-    currentOperation = type;
-    if (justEvaluated) justEvaluated = false;
-  });
-});
-
-document.querySelector('#equals').addEventListener('click', () => {
+function sendEquals() {
   evaluate();
   currentOperation = null;
   justEvaluated = true;
-});
+}
 
-document.querySelector('#clear').addEventListener('click', reset);
-
-document.querySelector('#decimal').addEventListener('click', () => {
+function sendDecimal() {
   if (justEvaluated) justEvaluated = false;
 
   if (!displayedValue.includes('.')) {
     displayedValue += '.';
     display.innerText = displayedValue;
   }
-});
+}
 
-document.querySelector('#delete').addEventListener('click', () => {
+function backspace() {
   if (justEvaluated) justEvaluated = false;
 
   let tempDisplay = '';
@@ -126,4 +107,81 @@ document.querySelector('#delete').addEventListener('click', () => {
 
   displayedValue = tempDisplay;
   display.innerText = displayedValue;
+}
+
+function sendOperator(type) {
+  if (currentOperation !== null) {
+    evaluate();
+  } else {
+    memory = displayedValue;
+    displayedValue = '0';
+  }
+  currentOperation = type;
+  if (justEvaluated) justEvaluated = false;
+}
+
+document.querySelectorAll('.number').forEach((number) => {
+  number.addEventListener('click', () => {
+    const value = number.innerText;
+    sendNumber(value);
+  });
+});
+
+document.querySelectorAll('.operator').forEach((operator) => {
+  const type = operator.innerText;
+  operator.addEventListener('click', () => {
+    sendOperator(type);
+  });
+});
+
+document.querySelector('#equals').addEventListener('click', () => {
+  sendEquals();
+});
+
+document.querySelector('#clear').addEventListener('click', reset);
+
+document.querySelector('#decimal').addEventListener('click', () => {
+  sendDecimal();
+});
+
+document.querySelector('#delete').addEventListener('click', backspace);
+
+window.addEventListener('keydown', (event) => event.preventDefault());
+
+window.addEventListener('keyup', ({ key }) => {
+  switch (key) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      sendNumber(key);
+      break;
+    case 'Enter':
+    case '=':
+      sendEquals();
+      break;
+    case 'Delete':
+      reset();
+      break;
+    case 'Backspace':
+      backspace();
+      break;
+    case '.':
+      sendDecimal();
+      break;
+    case '/':
+    case '+':
+    case '-':
+    case '*':
+      sendOperator(key);
+      break;
+    default:
+      break;
+  }
 });
