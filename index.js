@@ -113,3 +113,17 @@ document.querySelector('#decimal').addEventListener('click', () => {
     display.innerText = displayedValue;
   }
 });
+
+document.querySelector('#delete').addEventListener('click', () => {
+  if (justEvaluated) justEvaluated = false;
+
+  let tempDisplay = '';
+  if (displayedValue != 0) {
+    tempDisplay = displayedValue.slice(0, -1);
+  }
+
+  tempDisplay = tempDisplay.length === 0 ? '0' : tempDisplay;
+
+  displayedValue = tempDisplay;
+  display.innerText = displayedValue;
+});

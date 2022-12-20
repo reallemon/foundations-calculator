@@ -30,7 +30,8 @@ button {
 .operator,
 #clear,
 #decimal,
-#equals {
+#equals,
+#delete {
   background-color: #bb9af7;
 }
 
